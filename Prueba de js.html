@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicacion de OOP en JS</title>
+</head>
+<body>
+    <div class="container" style="padding:5%; height:500px;">
+        <div class="card">
+            <h1>Bienvenido</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <form class="form" id="formulario" style="text-align: center;" action="#">
+                            <div class="form-group">
+                                <input class="form-control form-group btn-outline-primary" placeholder="Ingresa nombre" type="text" id="nombre">
+                            </div>
+                            <div class="form-group">    
+                                <input class="form-control form-group btn-outline-primary" placeholder="Ingresa número" type="number" id="numero">
+                            </div>
+                            
+                            <button type="submit" id="boton" class="btn btn-primary">Enviar</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div id="contenido" style="height:400px; overflow: scroll;" class="alert alert-warning">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const Formulario = document.getElementById("formulario"); 
+        const Nombre = document.getElementById("nombre").value;
+        const Numero = document.getElementById("numero").value;
+        const Lista = document.getElementById("contenido");
+        const botonEliminar = document.getElementById("eliminar");
+
+        class Objeto{
+            constructor(nombre,numero){
+                this.nombre=nombre;
+                this.numero=numero;
+
+            }
+        }
+        class Interface{
+            añadir(objeto){
+
+                var Contenedor = Lista;
+                var elemento = document.createElement("div");
+                elemento.innerHTML = `
+                <div id="contenido" style="text-align:center" class="alert alert-dark">
+                    <div>
+                        <strong> Nombre </strong>: ${objeto.nombre}
+                        <strong> Numero </strong>: ${objeto.numero}
+                    </div>    
+                        <a class="btn btn-outline-dark" name="eliminar" id="eliminar"> Eliminar </a>
+                </div>
+                `;
+                Contenedor.appendChild(elemento);
+            }
+            resetear(){
+                document.getElementsByTagName("input").reset();
+            }
+            eliminar(element){
+               if(element.name === 'eliminar'){
+                   element.parentElement.remove();
+               }
+
+            }
+            editar(){}
+            mostrarMensaje(mensaje, claseCSS){
+                const DIV = document.createElement('div');
+                DIV.className = `alert alert-${claseCSS}`;
+                DIV.appendChild(document.createTextNode(mensaje));
+                //Mostrando en pantalla
+                const Pantalla = document.querySelector(".container");
+                const Todo = document.querySelector(".row");
+                Pantalla.insertBefore(DIV, Todo);
+                setTimeout(function(){
+                    document.querySelector(".alert").remove();  
+                },1500)
+            }
+
+        }
+
+        // Aqui se encuentran los objetos del DOM
+
+        
+        Formulario.addEventListener('submit',function(e){
+
+            const Nombre = document.getElementById("nombre").value;
+            const Numero = document.getElementById("numero").value;
+
+            const Objeto1 =new Objeto(Nombre,Numero);
+            const int =new Interface();
+            int.añadir(Objeto1);
+            int.mostrarMensaje("Genial! se guardó el item", "success");
+            int.resetear();
+            
+
+            e.preventDefault();
+        });
+        Lista.addEventListener('click',function(e){
+            const int = new Interface();
+            int.eliminar(e.target);
+            int.mostrarMensaje("Item eliminado correctamente", "danger")
+        }
+        );
+
+
+
+
+    </script>
+</body>
+</html>
